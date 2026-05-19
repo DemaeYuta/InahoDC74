@@ -3,87 +3,143 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ログイン | 運転士学科試験対策</title>
 
 <style>
-
-body{
-  font-family:sans-serif;
-  text-align:center;
-  margin-top:100px;
+:root {
+  --primary-color: #2b6cb0; /* 統一した信頼感のあるブルー */
+  --primary-hover: #2c5282;
+  --bg-color: #f7fafc;      /* 明るいグレーの背景 */
+  --card-bg: #ffffff;
+  --text-color: #2d3748;
+  --text-muted: #718096;
+  --border-color: #e2e8f0;
+  --error-color: #e53e3e;   /* エラー用のマイルドな赤 */
 }
 
-input{
-  padding:10px;
-  font-size:18px;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-button{
-  padding:10px 20px;
-  font-size:18px;
-  margin-left:10px;
+.container {
+  max-width: 400px; /* ログイン画面用に少しコンパクトに */
+  width: 100%;
+  background: var(--card-bg);
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #1a202c;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+input[type="password"] {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+}
+
+input[type="password"]:focus {
+  border-color: var(--primary-color);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+}
+
+.login-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.error-message {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--error-color);
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 0;
+  min-height: 21px; /* メッセージが出てもガタつかないように高さを確保 */
+}
 </style>
 
 </head>
 
 <body>
 
-<h2>パスワードを入力</h2>
+<div class="container">
 
-<input type="password" id="pw">
-<button onclick="login()">ログイン</button>
+  <h2>パスワードを入力</h2>
 
-<p id="msg"></p>
+  <div class="form-group">
+    <input type="password" id="pw" placeholder="パスワードを入力してください" onkeydown="if(event.key==='Enter') login()">
+  </div>
+  
+  <button onclick="login()" class="login-btn">ログイン</button>
+
+  <p id="msg" class="error-message"></p>
+
+</div>
 
 <script>
-
 async function sha256(text){
-
   const msgUint8 = new TextEncoder().encode(text);
-
-  const hashBuffer =
-    await crypto.subtle.digest('SHA-256', msgUint8);
-
-  const hashArray =
-    Array.from(new Uint8Array(hashBuffer));
-
-  const hashHex =
-    hashArray.map(b =>
-      b.toString(16).padStart(2,'0')
-    ).join('');
-
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
   return hashHex;
-
 }
 
 async function login(){
-
-  const password =
-    document.getElementById("pw").value;
-
-  const hash =
-    await sha256(password);
-
-  const correctHash =
-    "b6797bc4d4032ea60322cfc01e8ae586b52542f1f7c62268d5a28398c0ff0072";
+  const password = document.getElementById("pw").value;
+  const hash = await sha256(password);
+  const correctHash = "b6797bc4d4032ea60322cfc01e8ae586b52542f1f7c62268d5a28398c0ff0072";
 
   if(hash === correctHash){
-
     sessionStorage.setItem("auth","ok");
-
     location.href = "untenshi/home.html";
-
-  }else{
-
-    document.getElementById("msg")
-      .innerText = "パスワードが違います";
-
+  } else {
+    document.getElementById("msg").innerText = "パスワードが違います";
   }
-
 }
-
 </script>
 
 </body>
