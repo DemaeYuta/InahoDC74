@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>トップページ | 運転士学科試験対策</title>
+<link rel="icon" href="images/54hanasaki.png" type="image/png">
 
 <script>
 // =========================
@@ -14,9 +15,7 @@ if(sessionStorage.getItem("auth") !== "ok"){
   location.href = "../index.html";
 }
 
-// =========================
 // ログアウト
-// =========================
 function logout(){
   sessionStorage.removeItem("auth");
   location.href = "../index.html";
