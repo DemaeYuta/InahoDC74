@@ -21,6 +21,36 @@ function logout(){
   sessionStorage.removeItem("auth");
   location.href = "../index.html";
 }
+
+// =========================
+// JSONから最新の更新日を取得して表示
+// =========================
+window.addEventListener('DOMContentLoaded', () => {
+  // 指定されたファイル名 update.json を読み込む
+  fetch('update.json')
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.json();
+    })
+    .then(data => {
+      // data-key 属性を持っているメニューリンクをすべてループ処理
+      const links = document.querySelectorAll('.menu-link[data-key]');
+      links.forEach(link => {
+        const key = link.getAttribute('data-key');
+        const dateSpan = link.querySelector('.update-date');
+        
+        // JSON内に対象のキー（日付）があれば表示する
+        if (data[key]) {
+          dateSpan.textContent = `更新: ${data[key]}`;
+        }
+      });
+    })
+    .catch(error => {
+      console.error('更新日の読み込みに失敗しました:', error);
+      // 読み込めなかった場合はバッジを空欄にする
+      document.querySelectorAll('.update-date').forEach(span => span.textContent = '');
+    });
+});
 </script>
 
 <style>
@@ -84,7 +114,9 @@ h1 {
 }
 
 .menu-link {
-  display: block;
+  display: flex;                   /* 中身を横並びにする */
+  justify-content: space-between;  /* テキストと日付を両端に分ける */
+  align-items: center;             /* 上下中央揃え */
   background: var(--card-bg);
   color: var(--text-color);
   text-decoration: none;
@@ -102,6 +134,21 @@ h1 {
   color: var(--primary-color);
   background-color: #f0f7ff;
   transform: translateY(-1px);
+}
+
+/* 右側に表示される日付バッジのスタイル */
+.update-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: normal;
+  background: #edf2f7;
+  padding: 3px 8px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.menu-link:hover .update-date {
+  background: #e2e8f0;
 }
 
 .logout-btn {
@@ -133,18 +180,28 @@ h1 {
 <div class="container">
 
   <h1>運転士の学科試験対策サイト</h1>
-  <p class="subtitle">AIをフル活用し作成しました<br>問題の誤りや改善要望等は前出まで</p>
+  <p class="subtitle">利用は個人の範囲で留めてください<br>問題の誤りや要望は前出まで</p>
 
   <div class="section-title">共通科目</div>
-  <a href="unpou/index.html" class="menu-link">運転法規</a>
+  <a href="unpou/index.html" class="menu-link" data-key="unpou">
+    運転法規 <span class="update-date">-</span>
+  </a>
 
   <div class="section-title">共通科目重点特訓</div>
-  <a href="unpou-EX1/index.html" class="menu-link">運転法規-運転安全規範</a>
+  <a href="unpou-EX1/index.html" class="menu-link" data-key="unpou-ex1">
+    運転法規-運転安全規範 <span class="update-date">-</span>
+  </a>
 
   <div class="section-title">DC科目</div>
-  <a href="unten-riron/index.html" class="menu-link">運転理論(DC)</a>
-  <a href="nainen/index.html" class="menu-link">内燃機関</a>
-  <a href="seigyo/index.html" class="menu-link">車両制御</a>
+  <a href="unten-riron/index.html" class="menu-link" data-key="unten-riron">
+    運転理論(DC) <span class="update-date">-</span>
+  </a>
+  <a href="nainen/index.html" class="menu-link" data-key="nainen">
+    内燃機関 <span class="update-date">-</span>
+  </a>
+  <a href="seigyo/index.html" class="menu-link" data-key="seigyo">
+    車両制御 <span class="update-date">-</span>
+  </a>
 
   <button onclick="logout()" class="logout-btn">
     ログアウト
