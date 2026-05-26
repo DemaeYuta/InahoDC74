@@ -39,9 +39,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const key = link.getAttribute('data-key');
         const dateSpan = link.querySelector('.update-date');
         
-        // JSON内に対象のキー（日付）があれば表示する
+        // JSON内の最終更新日(現状手入力)を表示
         if (data[key]) {
-          dateSpan.textContent = `更新: ${data[key]}`;
+          dateSpan.textContent = `最終更新: ${data[key]}`;
         }
       });
     })
