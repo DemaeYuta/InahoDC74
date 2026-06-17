@@ -63,12 +63,17 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <style>
+  /*CSSでは--で変数を定義*/
 :root {
   --primary-color: #2b6cb0; /* 信頼感のあるブルー */
   --primary-hover: #2c5282;
-  --bg-color: #f7fafc;      /* 明るいグレーの背景 */
+  --bg-color: #f7f7f7;      /* 明るいグレーの背景 */
   --card-bg: #ffffff;
-  --text-color: #2d3748;
+  --kyouka-bg:#f6f6f6;
+  --minitest:#EFEFEF;
+  --kyouka-mawari:#71e352;
+  --text-color: #1e2531;
+  --text-color2: #2d3748;
   --text-muted: #718096;
   --border-color: #e2e8f0;
 }
@@ -86,13 +91,42 @@ body {
   box-sizing: border-box;
 }
 
+/*背景*/
 .container {
-  max-width: 480px;
+  max-width: 550px;
   width: 100%;
   background: var(--card-bg);
   padding: 35px;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+/*中間試験用*/
+.chukan {
+  background-color: var(--kyouka-bg);
+  padding: 15px;                      /* 内側の余白 */
+  border-radius: 12px;                /* 角丸 */
+  margin-top: 20px;                   /* 外側（上）の余白 */
+  margin-bottom: 20px;                /* 外側（下）の余白 */
+}
+
+/*ミニテスト用*/
+.minitest {
+  background-color: var(--minitest);
+  padding: 15px;                      /* 内側の余白 */
+  border-radius: 14px;                /* 角丸 */
+  margin-top: 20px;                   /* 外側（上）の余白 */
+  margin-bottom: 20px;                /* 外側（下）の余白 */
+}
+
+/*main用*/
+.main-kyouka {
+  background-color: var(--card-bg);
+  padding: 15px;                      /* 内側の余白 */
+  border-radius: 14px;                /* 角丸 */
+  margin-top: 20px;                   /* 外側（上）の余白 */
+  margin-bottom: 20px;                /* 外側（下）の余白 */
 }
 
 h1 {
@@ -111,28 +145,30 @@ h1 {
   margin-bottom: 30px;
 }
 
+/*教科の分類*/
 .section-title {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--text-color2);
   margin-top: 20px;
   margin-bottom: 8px;
   padding-left: 4px;
 }
 
+/*教科*/
 .menu-link {
   display: flex;                   /* 中身を横並びにする */
   justify-content: space-between;  /* テキストと日付を両端に分ける */
   align-items: center;             /* 上下中央揃え */
-  background: var(--card-bg);
-  color: var(--text-color);
+  background: var(--card-bg);      /*背景色*/
+  color: var(--text-color);        /*テキスト色*/
   text-decoration: none;
   font-size: 16px;
   font-weight: 600;
   padding: 16px 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--kyouka-mawari);
   border-radius: 12px;
   margin-bottom: 12px;
   transition: all 0.2s ease;
@@ -231,11 +267,14 @@ h1 {
     <div class="history-item" style="color: var(--text-muted); font-size: 12px;">読み込み中...</div>
   </div>
 
-  <div class="section-title">期間限定</div>
-  <a href="nainen-ex2/index.html" class="menu-link" data-key="nainen-ex2">
-    内燃機関ミニテスト2対策 <span class="update-date">-</span>
+  <div class="chukan">
+  <div class="section-title">中間試験用</div>
+  <a href="c-brake/index.html" class="menu-link" data-key="c-brake">
+    車両ブレーキ <span class="update-date">-</span>
   </a>
+  </div>
 
+  <div class="main-kyouka">
   <div class="section-title">共通科目</div>
   <a href="anki/index.html" class="menu-link" data-key="anki">
     安全の基本 <span class="update-date">-</span>
@@ -246,29 +285,36 @@ h1 {
 
   <div class="section-title">DC科目</div>
   <a href="unri/index.html" class="menu-link" data-key="unri">
-    運転理論(DC) <span class="update-date">-</span>
+    運転理論 <span class="update-date">-</span>
   </a>
+  <a href="kensyu/index.html" class="menu-link" data-key="kensyu">
+    検査修繕 <span class="update-date">-</span>
+  </a>
+
+  <div class="section-title">車両</div>
   <a href="brake/index.html" class="menu-link" data-key="brake">
-    ブレーキ <span class="update-date">-</span>
+    車両ブレーキ <span class="update-date">-</span>
   </a>
   <a href="seigyo/index.html" class="menu-link" data-key="seigyo">
     車両制御 <span class="update-date">-</span>
   </a>
+
+    <div class="section-title">内電</div>
   <a href="nainen/index.html" class="menu-link" data-key="nainen">
     内燃機関 <span class="update-date">-</span>
   </a>
   <a href="denki/index.html" class="menu-link" data-key="denki">
     鉄道電気 <span class="update-date">-</span>
   </a>
-  <a href="kensyu/index.html" class="menu-link" data-key="kensyu">
-    検査修繕(DC) <span class="update-date">-</span>
-  </a>
+  </div>
 
 
+  <div class="minitest">
   <div class="section-title">運転法規ミニテスト</div>
   <a href="unpou-test2/index.html" class="menu-link" data-key="unpou-test2">
     ミニテスト② <span class="update-date">-</span>
   </a>
+  </div>
 
   <button onclick="logout()" class="logout-btn">
     ログアウト
