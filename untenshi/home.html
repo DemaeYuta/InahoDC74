@@ -22,7 +22,7 @@ function logout() {
 }
 
 // =========================
-// JSONから最新の更新日と履歴を取得して表示
+// JSONから最新の更新日と履歴を取得して表示（キャッシュ対策付き）
 // =========================
 window.addEventListener('DOMContentLoaded', () => {
   fetch('update.json')
@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
       return response.json();
     })
     .then(data => {
-      // 1. 各メニューの最終更新日を反映
+      // 1. 各メニューの最終更新日を反映 ＆ 遷移先のキャッシュ対策
       const links = document.querySelectorAll('.menu-link[data-key]');
       links.forEach(link => {
         // data-keyを小文字に統一して比較（バグ防止）
@@ -39,7 +39,17 @@ window.addEventListener('DOMContentLoaded', () => {
         const dateSpan = link.querySelector('.update-date');
         
         if (data.menu && data.menu[key]) {
-          dateSpan.textContent = `最終更新: ${data.menu[key]}`;
+          const updateDate = data.menu[key]; // 例: "2026/06/29"
+          dateSpan.textContent = `最終更新: ${updateDate}`;
+          
+          // 更新履歴の日付から数字だけを抽出してパラメータ（バージョン）を作成（例: "20260629"）
+          const version = updateDate.replace(/[^0-9]/g, ''); 
+          const originalHref = link.getAttribute('href');
+          
+          // まだパラメータが付いていない場合のみ、URLの末尾に「?v=20260629」のように付与
+          if (originalHref && !originalHref.includes('?v=')) {
+            link.setAttribute('href', `${originalHref}?v=${version}`);
+          }
         }
       });
 
@@ -56,8 +66,17 @@ window.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => {
       console.error('データの読み込みに失敗しました:', error);
-      // 読み込めなかった場合は日付を空欄にする
-      document.querySelectorAll('.update-date').forEach(span => span.textContent = '');
+      // JSONが読み込めなかった場合は日付を空欄にし、念のため今日の日付でキャッシュを飛ばす
+      const todayVersion = new Date().toISOString().slice(0,10).replace(/[^0-9]/g, '');
+      document.querySelectorAll('.menu-link[data-key]').forEach(link => {
+        const span = link.querySelector('.update-date');
+        if (span) span.textContent = '';
+        
+        const originalHref = link.getAttribute('href');
+        if (originalHref && !originalHref.includes('?v=')) {
+          link.setAttribute('href', `${originalHref}?v=${todayVersion}`);
+        }
+      });
     });
 });
 </script>
@@ -263,7 +282,7 @@ h1 {
 <p class="subtitle">
   利用は個人の範囲で留めてください<br>
   誤りなどあれば下のリンクから↓<br>
-  <a href="https://forms.gle/VG6PLeHRAspFTG296" target="_blank" style="color: var(--primary-color); text-decoration: underline; font-weight: 600;">Googleフォームのリンクはこちら！</Form></a>
+  <a href="https://forms.gle/VG6PLeHRAspFTG296" target="_blank" style="color: var(--primary-color); text-decoration: underline; font-weight: 600;">Googleフォームのリンクはこちら！</a>
 </p>
 
   <div class="section-title">お知らせ</div>
