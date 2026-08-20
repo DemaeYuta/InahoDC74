@@ -82,7 +82,7 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <style>
-  /*CSSでは--で変数を定義*/
+/* CSS変数の定義 */
 :root {
   --primary-color: #2b6cb0; /* 信頼感のあるブルー */
   --primary-hover: #2c5282;
@@ -97,110 +97,120 @@ window.addEventListener('DOMContentLoaded', () => {
   --border-color: #e2e8f0;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
   margin: 0;
-  padding: 40px 20px;
+  padding: 16px 10px; /* スマホ向けに左右余白を短縮 */
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  box-sizing: border-box;
 }
 
-/*背景*/
+/* 背景コンテナ */
 .container {
   max-width: 550px;
   width: 100%;
   background: var(--card-bg);
-  padding: 35px;
+  padding: 24px 16px; /* スマホ向けにパディングを微調整 */
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
+/* グループ枠 */
+.chukan, .minitest, .main-kyouka {
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
 
-/*中間試験用*/
 .chukan {
   background-color: var(--kyouka-bg);
-  padding: 15px;                      /* 内側の余白 */
-  border-radius: 12px;                /* 角丸 */
-  margin-top: 20px;                   /* 外側（上）の余白 */
-  margin-bottom: 20px;                /* 外側（下）の余白 */
 }
 
-/*ミニテスト用*/
 .minitest {
   background-color: var(--minitest);
-  padding: 15px;                      /* 内側の余白 */
-  border-radius: 14px;                /* 角丸 */
-  margin-top: 20px;                   /* 外側（上）の余白 */
-  margin-bottom: 20px;                /* 外側（下）の余白 */
 }
 
-/*main用*/
 .main-kyouka {
   background-color: var(--card-bg);
-  padding: 15px;                      /* 内側の余白 */
-  border-radius: 14px;                /* 角丸 */
-  margin-top: 20px;                   /* 外側（上）の余白 */
-  margin-bottom: 20px;                /* 外側（下）の余白 */
 }
 
 h1 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   text-align: center;
   margin-top: 0;
   margin-bottom: 8px;
   color: #1a202c;
+  line-height: 1.4;
 }
 
 .subtitle {
   font-size: 13px;
   color: var(--text-muted);
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
+  line-height: 1.5;
 }
 
-/*教科の分類*/
+.subtitle a {
+  display: inline-block;
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+/* 教科の分類タイトル */
 .section-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-color2);
-  margin-top: 20px;
+  margin-top: 16px;
   margin-bottom: 8px;
   padding-left: 4px;
 }
 
-/*教科*/
+/* メニューリンクボタン（スマホ最適化） */
 .menu-link {
-  display: flex;                   /* 中身を横並びにする */
-  justify-content: space-between;  /* テキストと日付を両端に分ける */
-  align-items: center;             /* 上下中央揃え */
-  background: var(--card-bg);      /*背景色*/
-  color: var(--text-color);        /*テキスト色*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* 幅が狭い端末で折り返せるように設定 */
+  gap: 6px 12px;
+  background: var(--card-bg);
+  color: var(--text-color);
   text-decoration: none;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  padding: 16px 20px;
+  padding: 12px 14px;
+  min-height: 48px; /* タップしやすい標準的な高さ */
   border: 1px solid var(--kyouka-mawari);
   border-radius: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent; /* タップ時の青いハイライトを軽減 */
 }
 
 .menu-link:hover {
   border-color: var(--primary-color);
   color: var(--primary-color);
   background-color: #f0f7ff;
-  transform: translateY(-1px);
 }
 
-/* 右側に表示される日付バッジのスタイル */
+.menu-link:active {
+  transform: scale(0.98); /* スマホタップ時のフィードバック */
+}
+
+/* 右側に表示される日付バッジ */
 .update-date {
   font-size: 11px;
   color: var(--text-muted);
@@ -209,28 +219,33 @@ h1 {
   padding: 3px 8px;
   border-radius: 20px;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-left: auto; /* 折り返した際も右側に寄せやすい設定 */
 }
 
 .menu-link:hover .update-date {
   background: #e2e8f0;
 }
 
-/* --- 追加：更新履歴（お知らせ）のスタイル --- */
+/* 更新履歴（お知らせ）のスタイル */
 .history-box {
   background: #f8fafc;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 15px;
-  margin-top: 25px;
+  padding: 12px;
+  margin-top: 16px;
   max-height: 150px;
-  overflow-y: auto; /* 履歴が増えたらスクロール可能に */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* iOSでのスクロールをなめらかに */
 }
 
 .history-item {
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.5;
   margin-bottom: 8px;
   display: flex;
+  flex-wrap: wrap; /* 小さすぎる画面では日付と本文を上下に */
+  gap: 2px 8px;
   align-items: flex-start;
 }
 
@@ -241,19 +256,22 @@ h1 {
 .history-date {
   font-weight: 600;
   color: var(--primary-color);
-  min-width: 85px; /* 日付の幅を固定して綺麗に揃える */
+  min-width: 80px;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .history-text {
   color: var(--text-color);
+  flex: 1;
+  min-width: 180px;
 }
-/* -------------------------------------------- */
 
+/* ログアウトボタン */
 .logout-btn {
   display: block;
   width: 100%;
-  margin-top: 25px;
+  margin-top: 20px;
   padding: 14px;
   font-size: 15px;
   font-weight: 600;
@@ -263,12 +281,33 @@ h1 {
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+  min-height: 48px;
 }
 
 .logout-btn:hover {
-  color: #e53e3e; /* 警告色のマイルドな赤 */
+  color: #e53e3e;
   border-color: #fed7d7;
   background-color: #fff5f5;
+}
+
+/* PC等の広めの画面用（調整） */
+@media (min-width: 480px) {
+  body {
+    padding: 40px 20px;
+  }
+  .container {
+    padding: 35px;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  .chukan, .minitest, .main-kyouka {
+    padding: 15px;
+  }
+  .menu-link {
+    font-size: 16px;
+    padding: 16px 20px;
+  }
 }
 </style>
 
@@ -279,11 +318,11 @@ h1 {
 <div class="container">
 
   <h1>運転士の学科終了試験対策サイト</h1>
-<p class="subtitle">
-  利用は個人の範囲で留めてください<br>
-  誤りなどあれば下のリンクから↓<br>
-  <a href="https://forms.gle/VG6PLeHRAspFTG296" target="_blank" style="color: var(--primary-color); text-decoration: underline; font-weight: 600;">Googleフォームのリンクはこちら！</a>
-</p>
+  <p class="subtitle">
+    利用は個人の範囲で留めてください<br>
+    誤りなどあれば下のリンクから↓<br>
+    <a href="https://forms.gle/VG6PLeHRAspFTG296" target="_blank" style="color: var(--primary-color); text-decoration: underline; font-weight: 600;">Googleフォームのリンクはこちら！</a>
+  </p>
 
   <div class="section-title">お知らせ</div>
   <div class="history-box" id="history-list">
@@ -294,90 +333,85 @@ h1 {
 
     <div class="section-title">中間以降の範囲 運法信線</div>
       <a href="unpou2/index.html" class="menu-link" data-key="unpou2">
-        運転法規2 <span class="update-date">-</span>
+        <span>運転法規2</span> <span class="update-date">-</span>
       </a>
 
     <div class="section-title">中間以降の範囲 DC車両</div>
       <a href="syatai2/index.html" class="menu-link" data-key="syatai2">
-        車両車体2 ※全範囲 <span class="update-date">-</span>
+        <span>車両車体2 ※全範囲</span> <span class="update-date">-</span>
       </a>  
     
-    <a href="dentatsu2/index.html" class="menu-link" data-key="dentatsu2">
-        車両伝達2 <span class="update-date">-</span>
+      <a href="dentatsu2/index.html" class="menu-link" data-key="dentatsu2">
+        <span>車両伝達2</span> <span class="update-date">-</span>
       </a>
 
-    <a href="seigyo2/index.html" class="menu-link" data-key="seigyo2">
-        車両制御2 <span class="update-date">-</span>
-     </a>
-
+      <a href="seigyo2/index.html" class="menu-link" data-key="seigyo2">
+        <span>車両制御2</span> <span class="update-date">-</span>
+      </a>
 
     <div class="section-title">中間以降の範囲 DC内電運理</div>
       <a href="nainen2/index.html" class="menu-link" data-key="nainen2">
-        内燃機関2 <span class="update-date">-</span>
+        <span>内燃機関2</span> <span class="update-date">-</span>
       </a>
 
       <a href="unri2/index.html" class="menu-link" data-key="unri2">
-        運転理論2 <span class="update-date">-</span>
+        <span>運転理論2</span> <span class="update-date">-</span>
       </a>
   
     <div class="section-title">修了のみの科目</div>
       <a href="anki/index.html" class="menu-link" data-key="anki">
-        安全の基本 <span class="update-date">-</span>
+        <span>安全の基本</span> <span class="update-date">-</span>
       </a>
 
       <a href="sakuan/index.html" class="menu-link" data-key="sakuan">
-        作業安全 <span class="update-date">-</span>
+        <span>作業安全</span> <span class="update-date">-</span>
       </a>
 
       <a href="kensyu/index.html" class="menu-link" data-key="kensyu">
-        検査修繕(DC) <span class="update-date">-</span>
+        <span>検査修繕(DC)</span> <span class="update-date">-</span>
       </a>
   </div>
-
-
 
   <div class="minitest">
 
     <div class="section-title">〜中間試験までの範囲 運法信線</div>
       <a href="unpou1/index.html" class="menu-link" data-key="unpou1">
-        運転法規1 <span class="update-date">-</span>
+        <span>運転法規1</span> <span class="update-date">-</span>
       </a>
 
       <a href="senro/index.html" class="menu-link" data-key="senro">
-            線路1 <span class="update-date">-</span>
+        <span>線路1</span> <span class="update-date">-</span>
       </a>
     
     <div class="section-title">〜中間試験までの範囲 DC車両</div>
       <a href="syatai/index.html" class="menu-link" data-key="syatai">
-        車両車体1 <span class="update-date">-</span>
+        <span>車両車体1</span> <span class="update-date">-</span>
       </a>
 
       <a href="brake/index.html" class="menu-link" data-key="brake">
-       車両ブレーキ1 <span class="update-date">-</span>
-     </a>
+        <span>車両ブレーキ1</span> <span class="update-date">-</span>
+      </a>
 
       <a href="dentatsu1/index.html" class="menu-link" data-key="dentatsu1">
-        車両伝達1 <span class="update-date">-</span>
+        <span>車両伝達1</span> <span class="update-date">-</span>
       </a>
 
       <a href="seigyo/index.html" class="menu-link" data-key="seigyo">
-        車両制御1 <span class="update-date">-</span>
+        <span>車両制御1</span> <span class="update-date">-</span>
       </a>
 
     <div class="section-title">〜中間試験までの範囲 DC内電運理</div>
       <a href="nainen1/index.html" class="menu-link" data-key="nainen1">
-        内燃機関1 <span class="update-date">-</span>
+        <span>内燃機関1</span> <span class="update-date">-</span>
       </a>
 
       <a href="denki/index.html" class="menu-link" data-key="denki">
-        鉄道電気1 <span class="update-date">-</span>
+        <span>鉄道電気1</span> <span class="update-date">-</span>
       </a>
       
       <a href="unri1/index.html" class="menu-link" data-key="unri1">
-        運転理論1 <span class="update-date">-</span>
+        <span>運転理論1</span> <span class="update-date">-</span>
       </a>
-
-
 
   </div>
 
